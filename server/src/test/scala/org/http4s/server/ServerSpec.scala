@@ -5,15 +5,15 @@ import java.net.URL
 import cats.effect.IO
 import org.http4s.dsl.Http4sDsl
 import org.specs2.specification.AfterAll
-import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.global
 import scala.io.Source
 
 trait ServerContext extends Http4sDsl[IO] with AfterAll {
   def builder: ServerBuilder[IO]
 
-  lazy val server = builder
+  val server = builder
     .bindAny()
-    .withExecutionContext(ExecutionContext.global)
+    .withExecutionContext(global)
     .mountService(HttpService {
       case GET -> Root / "thread" / "routing" =>
         val thread = Thread.currentThread.getName

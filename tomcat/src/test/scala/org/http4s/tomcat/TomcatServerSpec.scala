@@ -5,10 +5,13 @@ package tomcat
 import cats.effect.IO
 import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory
 
-class TomcatServerSpec extends ServerSpec {
-  val builder = TomcatBuilder[IO]
-
+class TomcatServerSpec extends {
   // Prevents us from loading jar and war URLs, but lets us
   // run Tomcat twice in the same JVM.  This makes me grumpy.
-  TomcatURLStreamHandlerFactory.disable()
+  //
+  // Needs to run before the server is initialized in the superclass.
+  // This also makes me grumpy.
+  val _ = TomcatURLStreamHandlerFactory.disable()
+} with ServerSpec {
+  val builder = TomcatBuilder[IO]
 }
