@@ -4,6 +4,6 @@ package jetty
 
 import cats.effect.IO
 
-class JettyServerSpec extends ServerAddressSpec {
+class JettyServerSpec extends ServerSpec {
   val builder = JettyBuilder[IO]
 }
