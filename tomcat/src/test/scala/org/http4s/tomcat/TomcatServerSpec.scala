@@ -13,5 +13,5 @@ class TomcatServerSpec extends {
   // This also makes me grumpy.
   val _ = TomcatURLStreamHandlerFactory.disable()
 } with ServerSpec {
-  val builder = TomcatBuilder[IO]
+  def builder = TomcatBuilder[IO]
 }

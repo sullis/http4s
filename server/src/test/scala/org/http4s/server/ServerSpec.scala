@@ -13,7 +13,7 @@ import scala.io.Source
 trait ServerContext extends Http4sDsl[IO] with AfterAll {
   def builder: ServerBuilder[IO]
 
-  lazy val server = builder
+  val server = builder
     .bindAny()
     .withExecutionContext(global)
     .mountService(HttpService {
@@ -36,12 +36,17 @@ trait ServerSpec extends Http4sSpec with ServerContext {
   }
 
   "A server" should {
+    val globalExecutorThreadPrefix = BuildInfo.scalaVersion match {
+      case v if v.startsWith("2.11.") => "ForkJoinPool-"
+      case _ => "scala-execution-context-global-"
+    }
+
     "route requests on the service executor" in {
-      get("/thread/routing").unsafeRunSync must startWith("scala-execution-context-global-")
+      get("/thread/routing").unsafeRunSync must startWith(globalExecutorThreadPrefix)
     }
 
     "execute the service task on the service executor" in {
-      get("/thread/effect").unsafeRunSync must startWith("scala-execution-context-global-")
+      get("/thread/effect").unsafeRunSync must startWith(globalExecutorThreadPrefix)
     }
   }
 }
