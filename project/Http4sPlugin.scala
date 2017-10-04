@@ -163,7 +163,7 @@ object Http4sPlugin extends AutoPlugin {
         // propagation from failed steps above.
         //
         // https://github.com/sbt/sbt-release/issues/95
-        releaseStepCommand("show version")
+        releaseStepCommand("show http4s/version")
       )
     }
   )
