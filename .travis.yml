@@ -41,7 +41,7 @@ before_script:
   - decrypt_pgp_secrets
   - configure_git
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION ci
+  - sbt ++$TRAVIS_SCALA_VERSION "show http4s/version"
 
 before_cache:
   - cleanup_cache
